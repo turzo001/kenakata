@@ -47,6 +47,39 @@ def orders(request):
 def change_password(request):
     return render(request, 'app/changepassword.html')
 
+def topwear(request,data=None):
+    if data == None:
+        topwears=Product.objects.filter(catagory='TW')
+    elif data== 'below' :
+        topwears=Product.objects.filter(catagory='TW').filter(discounted_price__lt=6000)
+    elif data== 'above' :
+        topwears=Product.objects.filter(catagory='TW').filter(discounted_price__gt=6000)
+    elif data == 'yellow' or 'sara' or 'lee':
+        topwears=Product.objects.filter(catagory='TW').filter(brand=data)
+    return render(request, 'app/topwear.html',{'topwears':topwears})
+
+def laptop(request,data=None):
+    if data == None:
+        laptops=Product.objects.filter(catagory='L')
+    elif data== 'below' :
+        laptops=Product.objects.filter(catagory='L').filter(discounted_price__lt=60000)
+    elif data== 'above' :
+        laptops=Product.objects.filter(catagory='L').filter(discounted_price__gt=60000)
+    elif data == 'apple' or 'dell':
+        laptops=Product.objects.filter(catagory='L').filter(brand=data)
+    return render(request, 'app/laptop.html',{'laptops':laptops})
+
+def bottomwear(request,data=None):
+    if data == None:
+        bottomwears=Product.objects.filter(catagory='BW')
+    elif data== 'below' :
+        bottomwears=Product.objects.filter(catagory='BW').filter(discounted_price__lt=1000)
+    elif data== 'above' :
+        bottomwears=Product.objects.filter(catagory='BW').filter(discounted_price__gt=1000)
+    elif data == 'yellow' or 'lee':
+        bottomwears=Product.objects.filter(catagory='BW').filter(brand=data)
+    return render(request, 'app/bottomwear.html',{'bottomwears':bottomwears})
+
 def mobile(request, data=None):
     if data == None:
         mobiles=Product.objects.filter(catagory='M')

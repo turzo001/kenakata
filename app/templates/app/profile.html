@@ -12,6 +12,15 @@
    </ul>
   </div>
   <div class="col-sm-8 offset-sm-1">
+    {%if messages %}
+    {% for messages in messages %}
+    <p {% if messages.tags %} 
+        class="alert alert-{{messages.tags}} mb-5"
+        {% endif %}>
+        {{messages}}
+    </p>
+    {% endfor %}
+    {% endif %}
    <form action="" method="post" novalidate>
     {% csrf_token %}
     {% for fm in form %}
@@ -26,7 +35,7 @@
       </button>
     </div>
   </form>
-  {%if messages %}
+  {% comment %} {%if messages %}
   {% for messages in messages %}
   <p {% if messages.tags %} 
       class="alert alert-{{messages.tags}} mb-5"
@@ -34,7 +43,7 @@
       {{messages}}
   </p>
   {% endfor %}
-  {% endif %}
+  {% endif %} {% endcomment %}
   </div>
  </div>
 </div>

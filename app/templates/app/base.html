@@ -20,6 +20,13 @@
 
 
     <title>KenaKata | {% block title %} {% endblock title %} </title>
+
+    <style>
+      #GFG {
+          text-decoration: none;
+      }
+  </style>
+
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -54,7 +61,11 @@
          </ul>
          <form class="d-flex">
            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-           <button class="btn btn-warning" type="submit">S</button>
+           
+           <button class="btn btn-warning" type="submit">
+            <a id="GFG" href="{% url 'profile' %}"> {{request.user.username|make_list|first}} </a>
+          </button>
+           
          </form>
          <div>
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">

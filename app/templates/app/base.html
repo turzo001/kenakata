@@ -25,10 +25,14 @@
       #GFG {
           text-decoration: none;
       }
+      #C{
+        color:$orange-400;
+        background-color:$orange-400;
+      }
   </style>
 
   </head>
-  <body>
+  <body style="background-color:#e6ffff;">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
      <div class="container">
        <a class="navbar-brand" href="/"><div class="p-2 mb-2 bg-danger text-white">KenaKata</div></a>
@@ -45,7 +49,7 @@
                Electronics
              </a>
              <ul class="dropdown-menu" aria-labelledby="electronicsDropdown">
-               <li><a class="dropdown-item" href="{% url 'mobile' %}">Mobile</a></li>
+               <li><a class="dropdown-item" class="btn {{active}}" href="{% url 'mobile' %}">Mobile</a></li>
                <li><a class="dropdown-item" href="{% url 'laptop' %}">Laptop</a></li>
              </ul>
            </li>
@@ -82,7 +86,7 @@
               </ul>
             </li>
             <li class="nav-item mx-2">
-             <a href="{% url 'showcart' %}" class="nav-link text-white"><span class="badge bg-danger">4</span> Cart </a>
+             <a href="{% url 'showcart' %}" class="nav-link text-white"><span class="badge bg-danger">{{totalitem}}</span> Cart </a>
             </li>
             {% else %}
             <li class="nav-item mx-2">

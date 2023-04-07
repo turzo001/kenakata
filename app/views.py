@@ -9,7 +9,17 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 
-
+def searchp(request):
+    
+    if request.method=='GET':
+        search = request.GET.get('search')
+        if search:
+            # data=Product.objects.filter(brand__contains=search)
+            mdata=Q(Q(brand__icontains=search) | Q(title__icontains=search) | Q(discounted_price__icontains=search) | Q(description__icontains=search) | Q(catagory__icontains=search))
+            data=Product.objects.filter(mdata)
+            return render(request,'app/search.html',{'search':search, 'data':data})
+        else:
+            return render(request,'app/search.html')
 
 class ProductView(View):
     def get(self,request):
@@ -37,6 +47,14 @@ class ProductDetailView(View):
             item_already_in_cart=Cart.objects.filter(Q(product=product.id) & Q(user=request.user)).exists()
         return render(request, 'app/productdetail.html',
         {'product':product, 'item_already_in_cart':item_already_in_cart})
+
+def searchBar(request):
+    if request.method=='GET':
+        query=request.GET.get('query')
+        if query:
+            products=Product.objects.filter(discounted_price__contains=query)
+            return render(request,'app/searchbar.html',{'products':products})
+    return request(request,'app/searchbar.html',{'products':products})
 
 @login_required
 def add_to_cart(request):

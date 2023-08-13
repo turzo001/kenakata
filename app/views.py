@@ -9,6 +9,11 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 
+
+
+
+#                        ############ dashboard ###### 
+
 def searchp(request):
     
     if request.method=='GET':
@@ -20,6 +25,14 @@ def searchp(request):
             return render(request,'app/search.html',{'search':search, 'data':data})
         else:
             return render(request,'app/search.html')
+        
+# def searchBar(request):
+#     if request.method=='GET':
+#         query=request.GET.get('query')
+#         if query:
+#             products=Product.objects.filter(discounted_price__contains=query)
+#             return render(request,'app/searchbar.html',{'products':products})
+#     return request(request,'app/searchbar.html',{'products':products})
 
 class ProductView(View):
     def get(self,request):
@@ -48,15 +61,15 @@ class ProductDetailView(View):
         return render(request, 'app/productdetail.html',
         {'product':product, 'item_already_in_cart':item_already_in_cart})
 
-def searchBar(request):
-    if request.method=='GET':
-        query=request.GET.get('query')
-        if query:
-            products=Product.objects.filter(discounted_price__contains=query)
-            return render(request,'app/searchbar.html',{'products':products})
-    return request(request,'app/searchbar.html',{'products':products})
+# def searchBar(request):
+#     if request.method=='GET':
+#         query=request.GET.get('query')
+#         if query:
+#             products=Product.objects.filter(discounted_price__contains=query)
+#             return render(request,'app/searchbar.html',{'products':products})
+#     return request(request,'app/searchbar.html',{'products':products})
 
-@login_required
+@login_required(login_url="login")
 def add_to_cart(request):
     user=request.user
     product_id=request.GET.get('prod_id')
@@ -64,7 +77,7 @@ def add_to_cart(request):
     Cart(user=user,product=product).save()
     return redirect('/cart')
 
-@login_required
+@login_required(login_url="login")
 def show_cart(request):
         totalitem=0
         if request.user.is_authenticated:
@@ -84,6 +97,7 @@ def show_cart(request):
                 return render(request,'app/addtocart.html',{'carts':cart,'totalamount':totalamount,'amount':amount,'totalitem':totalitem})
             else:
                 return render(request, 'app/emptycart.html',{'totalitem':totalitem})
+        
         
 def plus_cart(request):
     if request.method == 'GET':
@@ -130,7 +144,7 @@ def minus_cart(request):
             }
         return JsonResponse(data)
 
-@login_required
+@login_required(login_url="login")
 def remove_cart(request):
     if request.method == 'GET':
         prod_id= request.GET['prod_id']
@@ -156,7 +170,7 @@ def remove_cart(request):
 def buy_now(request):
     return render(request, 'app/buynow.html')
 
-@login_required
+@login_required(login_url="login")
 def address(request):
     add= Customer.objects.filter(user=request.user)
     totalitem=0
@@ -164,7 +178,7 @@ def address(request):
             totalitem= len(Cart.objects.filter(user=request.user))
     return render(request, 'app/address.html',{'add':add,'active':'btn-primary','totalitem':totalitem})
 
-@login_required
+@login_required(login_url="login")
 def orders(request):
     op= Orderplaced.objects.filter(user=request.user)
     totalitem=0
@@ -249,7 +263,7 @@ class CustomerRegistrationView(View):
         return render(request, 'app/customerregistration.html',
                       {'form':form}) 
         
-@login_required
+@login_required(login_url="login")
 def checkout(request):
     totalitem=0
     if request.user.is_authenticated:
@@ -268,7 +282,7 @@ def checkout(request):
         totalamount=amount+shipping_amount
     return render(request, 'app/checkout.html',{'add':add,'totalamount':totalamount,'cart_items':cart_items,'totalitem':totalitem})
 
-@login_required
+@login_required(login_url="login")
 def payment_done(request):
     user=request.user
     custid=request.GET.get('custid')
@@ -297,4 +311,6 @@ class ProfileView(View):
             reg.save()
             messages.success(request, 'congratulations profile updated successfully!!')
         return render(request,'app/profile.html',{'form':form,'active':'btn-primary'})
+    
+
 

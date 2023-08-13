@@ -1,6 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.validators import MaxLengthValidator,MinValueValidator
+User=get_user_model()
 STATE_CHOICES=(
     ('Barisal Division','Barisal Division'),
     ('Chittagong Division','Chittagong Division'),
@@ -21,6 +22,7 @@ class Customer(models.Model):
     
     def __str__(self):
         return str(self.id)
+    
 CATAGORY_CHOICES=(
     ('M','Mobile'),
     ('L','Laptop'),

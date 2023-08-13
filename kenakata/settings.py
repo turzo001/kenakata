@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-f%ae&k6zla9e&6i_b$pqco48(-*@3ulbn=pbg(@&!4pjsqut1*
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+AUTH_USER_MODEL='account.User' 
 
 # Application definition
 
@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
+    'dashboard',
+    'account',
+    # 'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -126,3 +129,5 @@ EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# CRISPY_TEMPLATE_PACK='bootstrap4'

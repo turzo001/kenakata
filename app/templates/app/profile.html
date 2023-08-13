@@ -4,7 +4,7 @@
 {% block main-content %}
 <div class="container my-5">
  <div class="row">
-  <h3>Welcome <span class="text-capitalize">{{request.user}}</span></h3>
+  <h3>Welcome <span class="text-capitalize">{{request.user.username|capfirst}}</span></h3>
   <div class="col-sm-2 border-end">
    <ul class="list-unstyled">
     <li class="d-grid"><a href="{% url 'profile' %}" class="btn {{active}}">Profile</a></li>
@@ -31,7 +31,7 @@
     {% endfor %}
     <div class="col-12 mt-3">
       <button type="submit" class="btn btn-primary mb-3">
-        submit 
+         submit 
       </button>
     </div>
   </form>

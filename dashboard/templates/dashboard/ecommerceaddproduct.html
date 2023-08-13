@@ -1,0 +1,72 @@
+{% extends 'dashboard/dashboardbase.html' %}
+{% load static %}
+
+
+{% block main-content %}
+
+
+    <!--start main content-->
+     <main class="page-content">
+        <!--breadcrumb-->
+				<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+					<div class="breadcrumb-title pe-3">eCommerce</div>
+					<div class="ps-3">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb mb-0 p-0">
+								<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+								</li>
+								<li class="breadcrumb-item active" aria-current="page">Add Product</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="ms-auto">
+						<div class="btn-group">
+							<button type="button" class="btn btn-primary">Settings</button>
+							<button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">	<span class="visually-hidden">Toggle Dropdown</span>
+							</button>
+							<div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+              	<a class="dropdown-item" href="javascript:;">Action</a>
+								<a class="dropdown-item" href="javascript:;">Another action</a>
+								<a class="dropdown-item" href="javascript:;">Something else here</a>
+								<div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Separated link</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--end breadcrumb-->
+         
+         <div class="row">
+            <div class="col-12 col-lg-8">
+                <div class="card">    
+                  <form action="" method="post" enctype="multipart/form-data" novalidate class="shadow p-5">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <p {% if messages.tags %}
+                     class="alert-danger alert-{{messages.tags}} mb-5" 
+                     {% endif %}>{{message}}</p>
+                    {% endfor %}
+                    {% endif %}
+                       {% csrf_token %}
+                       {% for fm in form %}
+                       <div class="form-group mb-3">
+                       {{fm.label_tag}} {{fm}}
+                       <small class="text-danger">
+                          {{fm.errors|striptags}}</small>
+                       </div>
+                    {% endfor %}
+                    <input type="submit" value= "submit" class="btn btn-primary"><br>
+
+                    {% if form.non_field_errors %} 
+                    {% for error in form.non_field_errors %}
+                    <p class="alert alert-danger my-3">{{error}}</p>
+                    {% endfor %}
+                    {% endif %}
+                          </div><!--end row-->
+                       </div>
+                  </div>
+                </div>                   
+          </div><!--end row-->	 
+     </main>
+     <!--end main content-->
+
+     {% endblock main-content %}

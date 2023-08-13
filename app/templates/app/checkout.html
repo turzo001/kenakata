@@ -36,9 +36,18 @@
             Address: {{forloop.counter}}</label>
         </div>
         {% endfor %} 
+
+      {% comment %} {{% if adress_already_in_profile %}} {% endcomment %}
         <div class="text-end">
           <button type="submit" class="btn btn-warning mt-3 px-5 fw-bold">Continue</button>
+          
+      {% comment %} {% else %}
+          <div class="text-end">
+          <a href="{% url 'address' %}" class="btn btn-warning shadow px-5 py-2 ms-4">
+            Go to Cart</a> {% endcomment %}
         </div>
+      {% comment %} {{% endif %}} {% endcomment %}
+
       </form>
     </div>
   </div>

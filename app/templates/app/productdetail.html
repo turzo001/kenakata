@@ -11,8 +11,9 @@
    <h2>Product Title: {{product.title}}</h2>
    <hr>
    <p>{{product.description}}</p> <br>
-   <h4>Tk: {{product.selling_price}}<small class="fw-light text-decoration-line-through">Tk: {{product.discounted_price}}</small></h4> <br>
+   <h4>Tk: {{product.discounted_price}}<small class="fw-light text-decoration-line-through">Tk: {{product.selling_price}}</small></h4> <br>
 
+   
    {% if item_already_in_cart %}
    <a href="{% url 'showcart' %}" class="btn btn-warning shadow px-5 py-2 ms-4">
       Go to Cart</a>

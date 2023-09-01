@@ -19,11 +19,13 @@
     <link rel="stylesheet" href="{% static 'dashboard/css/icons.css' %}">
 
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
     <link href="{% static 'dashboard/css/extra-icons.css' %}" rel="stylesheet">
+
     <link href="{% static 'dashboard/css/main.css' %}" rel="stylesheet">
     <link href="{% static 'dashboard/css/dark-theme.css' %}" rel="stylesheet">
     <link href="{% static 'dashboard/css/semi-dark-theme.css' %}" rel="stylesheet">
-    <link href="{% static 'dashboard/css/minimal-theme.css' %}" rel="stylesheet">
+    <link href="{% static 'dashboard/css/minimal-theme.css' %}" rel="stylesheet"> 
     <link href="{% static 'dashboard/css/shadow-theme.css' %}" rel="stylesheet">
     
      
@@ -514,12 +516,12 @@
                     </li>
                     <li> <a href="{% url 'ecommercecustomers' %}"><span class="material-symbols-outlined">arrow_right</span>Customers</a>
                     </li>
-                    <li> <a href="{% url 'ecommercecustomerdetails' %}"><span class="material-symbols-outlined">arrow_right</span>Customer Details</a>
-                    </li>
+                    {% comment %} <li> <a href="{% url 'ecommercecustomerdetails' %}"><span class="material-symbols-outlined">arrow_right</span>Customer Details</a>
+                    </li> {% endcomment %}
                     <li> <a href="{% url 'ecommerceorders' %}"><span class="material-symbols-outlined">arrow_right</span>Orders</a>
                     </li>
-                    <li> <a href="{% url 'ecommerceorderdetails' %}"><span class="material-symbols-outlined">arrow_right</span>Order Details</a>
-                    </li>
+                    {% comment %} <li> <a href="{% url 'ecommerceorderdetails' %}"><span class="material-symbols-outlined">arrow_right</span>Order Details</a>
+                    </li> {% endcomment %}
                   </ul>
                 </li>
 
@@ -612,7 +614,7 @@
                   </ul> {% endcomment %}
                 {% comment %} </li> {% endcomment %}
                 <li class="menu-label">Pages</li>
-                <li>
+                {% comment %} <li>
                   <a class="has-arrow" href="javascript:;">
                     <div class="parent-icon"><span class="material-symbols-outlined">lock_open</span>
                     </div>
@@ -626,7 +628,7 @@
                         <li><a href="{% url 'basicforgotpass' %}" target="_blank"><span class="material-symbols-outlined">arrow_right</span>Forgot Password</a></li>
                         <li><a href="{% url 'basicresetpass' %}" target="_blank"><span class="material-symbols-outlined">arrow_right</span>Reset Password</a></li>
                       </ul>
-                    </li>
+                    </li> {% endcomment %}
 
                                       {% comment %} not using this covr or boxed Authentication {% endcomment %}
                     {% comment %} <li><a class="has-arrow" href="javascript:;"><span class="material-symbols-outlined">arrow_right</span>Cover</a>
@@ -646,7 +648,7 @@
                       </ul>
                     </li> {% endcomment %}
 
-                  </ul>
+                  {% comment %} </ul> {% endcomment %}
                 </li>
                 <li>
                   <a href="{% url 'userprofile' %}">
@@ -655,14 +657,14 @@
                     <div class="menu-title">User Profile</div>
                   </a>
                 </li>
-                <li>
+                {% comment %} <li>
                   <a href="{% url 'timeline' %}">
                     <div class="parent-icon"><span class="material-symbols-outlined">hotel_class</span>
                     </div>
                     <div class="menu-title">Timeline</div>
                   </a>
-                </li>
-                <li>
+                </li> {% endcomment %}
+                {% comment %} <li>
                   <a class="has-arrow" href="javascript:;">
                     <div class="parent-icon"><span class="material-symbols-outlined">warning</span>
                     </div>
@@ -675,10 +677,10 @@
                     </li>
                     <li> <a href="{% url 'pageseror500' %}" target="_blank"><span class="material-symbols-outlined">arrow_right</span>500 Error</a>
                     </li>
-                    {% comment %} <li> <a href="{% url 'pagescomingsoon' %}" target="_blank"><span class="material-symbols-outlined">arrow_right</span>Coming Soon</a>
-                    </li> {% endcomment %}
+                    <li> <a href="{% url 'pagescomingsoon' %}" target="_blank"><span class="material-symbols-outlined">arrow_right</span>Coming Soon</a>
+                    </li> 
                   </ul>
-                </li>
+                </li> {% endcomment %}
                 {% comment %} <li>
                   <a href="{% url 'faq' %}">
                     <div class="parent-icon"><span class="material-symbols-outlined">call</span>
@@ -864,40 +866,40 @@
    </div>
 
 
-   <!--start theme customization-->
+  <!--start theme customization-->
    <div class="offcanvas offcanvas-end" tabindex="-1" id="ThemeCustomizer" aria-labelledby="ThemeCustomizerLable">
-     <div class="offcanvas-header border-bottom">
-       <h5 class="offcanvas-title" id="ThemeCustomizerLable">Theme Customizer</h5>
-       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-     </div>
-     <div class="offcanvas-body">
-       <h6 class="mb-0">Theme Variation</h6>
-       <hr>
-       <div class="form-check form-check-inline">
-         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="LightTheme" value="option1">
-         <label class="form-check-label" for="LightTheme">Light</label>
-       </div>
-       <div class="form-check form-check-inline">
-         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="DarkTheme" value="option2" checked="">
-         <label class="form-check-label" for="DarkTheme">Dark</label>
-       </div>
-       <div class="form-check form-check-inline">
-         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="SemiDarkTheme" value="option3">
-         <label class="form-check-label" for="SemiDarkTheme">Semi Dark</label>
-       </div>
-       <hr>
-       <div class="form-check form-check-inline">
-         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="MinimalTheme" value="option3">
-         <label class="form-check-label" for="MinimalTheme">Minimal Theme</label>
-       </div>
-       <div class="form-check form-check-inline">
-         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="ShadowTheme" value="option4">
-         <label class="form-check-label" for="ShadowTheme">Shadow Theme</label>
-       </div>
-      
-     </div>
-   </div>
-   <!--end theme customization-->
+    <div class="offcanvas-header border-bottom">
+      <h5 class="offcanvas-title" id="ThemeCustomizerLable">Theme Customizer</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <h6 class="mb-0">Theme Variation</h6>
+      <hr>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="LightTheme" value="option1">
+        <label class="form-check-label" for="LightTheme">Light</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="DarkTheme" value="option2" checked="">
+        <label class="form-check-label" for="DarkTheme">Dark</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="SemiDarkTheme" value="option3">
+        <label class="form-check-label" for="SemiDarkTheme">Semi Dark</label>
+      </div>
+      <hr>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="MinimalTheme" value="option3">
+        <label class="form-check-label" for="MinimalTheme">Minimal Theme</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="ShadowTheme" value="option4">
+        <label class="form-check-label" for="ShadowTheme">Shadow Theme</label>
+      </div>
+     
+    </div>
+  </div>
+  <!--end theme customization--> 
 
   <!--plugins-->
   <script src="{% static 'dashboard/js/jquery.min.js'%}"></script>

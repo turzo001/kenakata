@@ -15,7 +15,7 @@ class CustomerModelAdmin(admin.ModelAdmin):
 # Product resister
 @admin.register(Product)
 class ProductModelAdmin(admin.ModelAdmin):
-    list_display=['id','title','selling_price','discounted_price','description','brand',
+    list_display=['id','title','selling_price','discounted_price','size','colour','description','brand',
                   'catagory','product_image']
 
 #cart resister

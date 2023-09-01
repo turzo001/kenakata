@@ -61,6 +61,27 @@ class ProductDetailView(View):
         return render(request, 'app/productdetail.html',
         {'product':product, 'item_already_in_cart':item_already_in_cart})
 
+@login_required(login_url="login")
+def checkout(request):
+
+    totalitem=0
+    if request.user.is_authenticated:
+        totalitem= len(Cart.objects.filter(user=request.user))
+    user=request.user
+    add=Customer.objects.filter(user=user)
+    cart_items= Cart.objects.filter(user=user)
+    
+    amount=0.0
+    shipping_amount=70.0
+    total_amount=0.0
+    cart_product=[p for p in Cart.objects.all() if p.user ==request.user]
+    if cart_product:
+        for p in cart_product:
+            tempamount=(p.quantity*p.product.discounted_price)
+            amount += tempamount
+        totalamount=amount+shipping_amount
+    return render(request, 'app/checkout.html',{'add':add,'totalamount':totalamount,'cart_items':cart_items,'totalitem':totalitem})
+
 # def searchBar(request):
 #     if request.method=='GET':
 #         query=request.GET.get('query')
@@ -178,6 +199,7 @@ def address(request):
             totalitem= len(Cart.objects.filter(user=request.user))
     return render(request, 'app/address.html',{'add':add,'active':'btn-primary','totalitem':totalitem})
 
+
 @login_required(login_url="login")
 def orders(request):
     op= Orderplaced.objects.filter(user=request.user)
@@ -263,24 +285,6 @@ class CustomerRegistrationView(View):
         return render(request, 'app/customerregistration.html',
                       {'form':form}) 
         
-@login_required(login_url="login")
-def checkout(request):
-    totalitem=0
-    if request.user.is_authenticated:
-        totalitem= len(Cart.objects.filter(user=request.user))
-    user=request.user
-    add=Customer.objects.filter(user=user)
-    cart_items= Cart.objects.filter(user=user)
-    amount=0.0
-    shipping_amount=70.0
-    total_amount=0.0
-    cart_product=[p for p in Cart.objects.all() if p.user ==request.user]
-    if cart_product:
-        for p in cart_product:
-            tempamount=(p.quantity*p.product.discounted_price)
-            amount += tempamount
-        totalamount=amount+shipping_amount
-    return render(request, 'app/checkout.html',{'add':add,'totalamount':totalamount,'cart_items':cart_items,'totalitem':totalitem})
 
 @login_required(login_url="login")
 def payment_done(request):
@@ -298,6 +302,7 @@ class ProfileView(View):
     def get(self,request):
         form= CustomerProfileForm()
         return render(request, 'app/profile.html',{'form':form,'active':'btn-primary'})
+    
     def post(self,request):
         form= CustomerProfileForm(request.POST)
         if form.is_valid():
@@ -311,6 +316,8 @@ class ProfileView(View):
             reg.save()
             messages.success(request, 'congratulations profile updated successfully!!')
         return render(request,'app/profile.html',{'form':form,'active':'btn-primary'})
+    
+
     
 
 

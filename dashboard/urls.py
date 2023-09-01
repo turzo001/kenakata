@@ -18,10 +18,11 @@ urlpatterns = [
     path('addnewprod/', views.AddProduct.as_view(),name='addnewprod'),
     path('productedit/<int:pk>', views.ProductEditView.as_view(), name='productedit'),
     path('productdelete/<int:pk>', views.ProductDeleteView.as_view(), name='productdelete'),
-    path('ecommercecustomerdetails/', views.ecommercecustomerdetails,name='ecommercecustomerdetails'),
-    path('ecommercecustomers/', views.ecommercecustomers,name='ecommercecustomers'),
-    path('ecommerceorderdetails/', views.ecommerceorderdetails,name='ecommerceorderdetails'),
-    path('ecommerceorders', views.ecommerceorders,name='ecommerceorders'),
+    path('ecommercecustomerdetails/<int:pk>', views.ecommercecustomerdetails.as_view(), name='ecommercecustomerdetails'),
+
+    path('ecommercecustomers/', views.ecommercecustomers.as_view(),name='ecommercecustomers'),
+    path('ecommerceorderdetails/<int:pk>', views.OrderPlaced.as_view(),name='ecommerceorderdetails'),
+    path('ecommerceorders', views.ecommerceorder.as_view(),name='ecommerceorders'),
     path('ecommerceprod/', views.ProductListView.as_view(),name='ecommerceprod'),
         
     path('index/', views.dashboardindex.as_view(),name='index'),

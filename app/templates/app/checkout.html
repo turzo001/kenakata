@@ -22,8 +22,39 @@
   <div class="col-sm-4 offset-sm-1">
     <h4>Select Shipping Address</h4>
     <hr>
+    
     <form action="/paymentdone">
+
+      {% comment %} Want to add new adress?
+      {% if address_exists %}
+
+      {%if messages %}
+      {% for messages in messages %}
+      <p {% if messages.tags %} 
+          class="alert alert-{{messages.tags}} mb-5"
+          {% endif %}>
+          {{messages}}
+      </p>
+      {% endfor %}
+      {% endif %}
+     <form action="" method="post" novalidate>
+      {% csrf_token %}
+      {% for fm in form %}
+      <div class="form-group col-lg-6 mb-3">
+        {{fm.label_tag}} {{fm}} <small class="text-danger">
+            {{fm.errors|striptags}} </small> <br>
+       </div>
+      {% endfor %}
+      <div class="col-12 mt-3">
+        <button type="submit" class="btn btn-primary mb-3">
+           submit 
+        </button>
+      </div>
+     </form> {% endcomment %}
+
+
       {% for ad in add %}
+      
       <div class="card">
         <div class="card-body">
         <h5>{{ad.name}}</h5>

@@ -30,7 +30,9 @@ class MyPasswordChangeForm(PasswordChangeForm):
     new_password2=forms.CharField(label=_("new password"),strip=False,widget=forms.PasswordInput(attrs={'autocomplete':'new password','class':'form-control'}))
 
 class MyPasswordResetForm(PasswordResetForm):
-    email= forms.EmailField(label=_("Email"),max_length=254,widget=forms.EmailInput(attrs={'autocomplete':'email','class':'form-control'}))
+    email= forms.EmailField(label=_("Email"),max_length=254,
+        widget=forms.EmailInput(attrs={'autocomplete':'email',
+                                       'class':'form-control'}))
 
 class MySetPasswordForm(SetPasswordForm):
     new_password1=forms.CharField(label=_("New Password"),
@@ -47,4 +49,12 @@ class CustomerProfileForm(forms.ModelForm):
                  'city':forms.TextInput(attrs={'class':'form-control'}),
                  'state':forms.Select(attrs={'class':'form-control'}),
                  'zipcode':forms.NumberInput(attrs={'class':'form-control'})}
+
+# class PricePredictionForm(forms.Form):
+#     ram = forms.IntegerField()
+#     rom = forms.IntegerField()
+
+# class PricePredictionForm(forms.Form):
+#     ram = forms.IntegerField()
+#     rom = forms.IntegerField()
         

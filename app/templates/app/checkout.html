@@ -23,7 +23,7 @@
     <h4>Select Shipping Address</h4>
     <hr>
     
-    <form action="/paymentdone">
+    <form action="/paymentdone" id="paymentdone">
 
       {% comment %} Want to add new adress?
       {% if address_exists %}
@@ -69,8 +69,12 @@
         {% endfor %} 
 
       {% comment %} {{% if adress_already_in_profile %}} {% endcomment %}
+      
+      {% comment %} payment intregration  {% endcomment %}
         <div class="text-end">
-          <button type="submit" class="btn btn-warning mt-3 px-5 fw-bold">Continue</button>
+          {% comment %} <button type="submit" class="btn btn-warning mt-3 px-5 fw-bold">Continue</button> {% endcomment %}
+              <!-- Set up a container element for the button -->
+    <div id="paypal-button-container"></div>
           
       {% comment %} {% else %}
           <div class="text-end">
@@ -84,3 +88,38 @@
   </div>
 </div>
 {% endblock main-content %}
+
+{% block payment-gateway %}
+
+<script src="https://www.paypal.com/sdk/js?client-id=AZxzafjkblFJeesx2z_Uv17aJoQAUjIB4ySGZusQ0qp1fR34oo1dKpkDZBLSi8lTZaZK1aAnQ8LnyUdL&currency=USD"></script>
+
+<script>
+
+      // Render the PayPal button into #paypal-button-container
+      paypal.Buttons({
+
+        // Call your server to set up the transaction
+      createOrder: function(data,actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: '{{totalamount}}'
+            }
+          }]
+        });
+      },
+
+        // Call your server to finalize the transaction
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(function(details){
+            alert('transaction completed by' + details.payer.name.given_name + '!');
+            document.getElementById('paymentdone').submit();
+          });
+      }
+
+   
+
+    }).render('#paypal-button-container');
+</script>
+
+{% endblock payment-gateway %}

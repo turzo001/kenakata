@@ -7,12 +7,34 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-
-
+import joblib
 
 
 
 #                        ############ dashboard ###### 
+# def predict_price(request):
+#     if request.method == 'POST':
+#         form = PricePredictionForm(request.POST)
+#         if form.is_valid():
+#             ram = form.cleaned_data['ram']
+#             rom = form.cleaned_data['rom']
+
+#             # Load the machine learning model
+#             model = joblib.load('predict.joblib')
+
+#             # Make predictions using your machine learning model
+#             predicted_price = model.predict([[ram, rom]])
+
+#             # Save input and prediction to the database
+#             PricePredictionInput.objects.create(ram=ram, rom=rom)
+
+#             return render(request, 'app/result.html', {'predicted_price': predicted_price})
+#     else:
+#         form = PricePredictionForm()
+
+#     return render(request, 'app/predict.html', {'form': form})
+
+
 
 def searchp(request):
     
@@ -42,6 +64,7 @@ class ProductView(View):
         mobiles= Product.objects.filter(catagory='M')
         laptop= Product.objects.filter(catagory='L')
         if request.user.is_authenticated:
+            messages.success(request, 'welcome dear customer')
             totalitem= len(Cart.objects.filter(user=request.user))
         return render(request, 'app/home.html',
         {'topwears':topwears,
@@ -63,7 +86,6 @@ class ProductDetailView(View):
 
 @login_required(login_url="login")
 def checkout(request):
-
     totalitem=0
     if request.user.is_authenticated:
         totalitem= len(Cart.objects.filter(user=request.user))
@@ -73,13 +95,14 @@ def checkout(request):
     
     amount=0.0
     shipping_amount=70.0
-    total_amount=0.0
+    totalamount=0.0
     cart_product=[p for p in Cart.objects.all() if p.user ==request.user]
     if cart_product:
         for p in cart_product:
             tempamount=(p.quantity*p.product.discounted_price)
             amount += tempamount
         totalamount=amount+shipping_amount
+    #### zero product is going in checkout
     return render(request, 'app/checkout.html',{'add':add,'totalamount':totalamount,'cart_items':cart_items,'totalitem':totalitem})
 
 # def searchBar(request):
@@ -111,12 +134,14 @@ def show_cart(request):
             cart_product=[p for p in Cart.objects.all() if p.user == user]
         
             if cart_product:
+                messages.success(request, 'your cart items are here')
                 for p in cart_product:
                     tempamount=(p.quantity*p.product.discounted_price)
                     amount += tempamount
                     totalamount= amount + shipping_amount
                 return render(request,'app/addtocart.html',{'carts':cart,'totalamount':totalamount,'amount':amount,'totalitem':totalitem})
             else:
+                messages.success(request, 'no cart item')
                 return render(request, 'app/emptycart.html',{'totalitem':totalitem})
         
         
@@ -124,46 +149,63 @@ def plus_cart(request):
     if request.method == 'GET':
         prod_id= request.GET['prod_id']
         c=Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
-        c.quantity+=1
-        c.save()
-        amount=0.0
-        shipping_amount=70.0
-        total_amount=0.0
-        cart_product=[p for p in Cart.objects.all() if p.user ==request.user]
         
-        for p in cart_product:
-            tempamount=(p.quantity*p.product.discounted_price)
-            amount += tempamount
-                
-        data={
-            'quantity':c.quantity,
-            'amount':amount,
-            'totalamount': amount + shipping_amount
-            }
-        return JsonResponse(data)
+        prod_qty=Product.objects.get(id=prod_id)
+        c.quantity+=1
+        if (c.quantity<=prod_qty.quantity):
+            # c.quantity+=1
+            c.save()
+            amount=0.0
+            shipping_amount=70.0
+            total_amount=0.0
+            cart_product=[p for p in Cart.objects.all() if p.user ==request.user]
+            
+            for p in cart_product:
+                tempamount=(p.quantity*p.product.discounted_price)
+                amount += tempamount
+            # prod_qty.quantity-=c.quantity
+            # prod_qty.save()     
+            data={
+                'quantity':c.quantity,
+                'amount':amount,
+                'totalamount': amount + shipping_amount
+                }
+            return JsonResponse(data)
+            
+        else:
+            pass
+    else:
+        pass
 
 
 def minus_cart(request):
     if request.method == 'GET':
         prod_id= request.GET['prod_id']
         c=Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
+        prod_qty=Product.objects.get(id=prod_id)     
         c.quantity-=1
-        c.save()
-        amount=0.0
-        shipping_amount=70.0
-        total_amount=0.0
-        cart_product=[p for p in Cart.objects.all() if p.user ==request.user]
-        
-        for p in cart_product:
-            tempamount=(p.quantity*p.product.discounted_price)
-            amount += tempamount
-                
-        data={
-            'quantity':c.quantity,
-            'amount':amount,
-            'totalamount': amount + shipping_amount
-            }
-        return JsonResponse(data)
+        if (c.quantity>=1):
+            c.save()
+            amount=0.0
+            shipping_amount=70.0
+            total_amount=0.0
+            cart_product=[p for p in Cart.objects.all() if p.user ==request.user]
+            
+            for p in cart_product:
+                tempamount=(p.quantity*p.product.discounted_price)
+                amount += tempamount
+            # prod_qty.quantity+=c.quantity
+            # prod_qty.save()                   
+            data={
+                'quantity':c.quantity,
+                'amount':amount,
+                'totalamount': amount + shipping_amount
+                }
+            return JsonResponse(data)
+        else:
+            pass
+    else:
+        pass
 
 @login_required(login_url="login")
 def remove_cart(request):
@@ -200,13 +242,45 @@ def address(request):
     return render(request, 'app/address.html',{'add':add,'active':'btn-primary','totalitem':totalitem})
 
 
+# @login_required(login_url="login")
+# def orders(request):
+#     op= Orderplaced.objects.filter(user=request.user)
+#     totalitem=0
+#     if request.user.is_authenticated:
+#         totalitem= len(Cart.objects.filter(user=request.user))
+#         messages.success(request, 'your orders')
+#     return render(request, 'app/orders.html',{'order_placed':op,'totalitem':totalitem})
+# views.py
+
+# Assuming you have imported necessary modules and classes at the beginning of your views.py file
+
 @login_required(login_url="login")
 def orders(request):
-    op= Orderplaced.objects.filter(user=request.user)
-    totalitem=0
     if request.user.is_authenticated:
-        totalitem= len(Cart.objects.filter(user=request.user))
-    return render(request, 'app/orders.html',{'order_placed':op,'totalitem':totalitem})
+        order_placed_instances = Orderplaced.objects.filter(user=request.user)
+        totalitem = len(Cart.objects.filter(user=request.user))
+
+        for order_placed_instance in order_placed_instances:
+            product = order_placed_instance.product
+            ordered_quantity = order_placed_instance.quantity
+
+            # Subtract the ordered quantity from the product quantity
+            if product.quantity >= ordered_quantity:
+                product.quantity -= ordered_quantity
+                product.save()
+            # else:
+            #     # Handle the case where the ordered quantity is greater than the available quantity
+            #     messages.warning(request, f"Insufficient quantity for {product.title} in order {order_placed_instance.id}.")
+
+        # messages.success(request, 'Your orders')
+
+        return render(request, 'app/orders.html', {'order_placed': order_placed_instances, 'totalitem': totalitem})
+    else:
+        # Handle the case where the user is not authenticated
+        messages.error(request, 'Please log in to view your orders.')
+        return redirect('login')  # Redirect to the login page
+
+
 
 def topwear(request,data=None):
     totalitem=0
@@ -292,8 +366,11 @@ def payment_done(request):
     custid=request.GET.get('custid')
     customer=Customer.objects.get(id=custid)
     cart=Cart.objects.filter(user=user)
+    
+    
     for c in cart:
         Orderplaced(user=user,customer=customer,product=c.product,quantity=c.quantity).save()
+        
         c.delete()
     return redirect("orders")
 
@@ -316,8 +393,25 @@ class ProfileView(View):
             reg.save()
             messages.success(request, 'congratulations profile updated successfully!!')
         return render(request,'app/profile.html',{'form':form,'active':'btn-primary'})
+def predictions(request):
+    return render(request,'app/predict.html')
     
+# def predict_price(request):
+#     if request.method == 'POST':
+#         form = PricePredictionForm(request.POST)
+#         if form.is_valid():
+#             ram = form.cleaned_data['ram']
+#             rom = form.cleaned_data['rom']
 
-    
+#             # Make predictions using your machine learning model
+#             model = joblib.load('mlmodel/predict.joblib')
+#             predicted_price = model.predict([[ram, rom]])
 
+#             # Save input and prediction to the database
+#             PricePredictionForm.objects.create(ram=ram, rom=rom)
 
+#             return render(request, 'app/result.html', {'predicted_price': predicted_price})
+#     else:
+#         form = PricePredictionForm()
+
+#     return render(request, 'app/predict_price.html', {'form': form})

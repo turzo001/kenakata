@@ -18,6 +18,28 @@
     <!--Custom CSS-->
     <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
 
+    <meta name="referrer" content="no-referrer-when-downgrade">
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+    <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+  (function(){
+  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+  s1.async=true;
+  s1.src='https://embed.tawk.to/65e598468d261e1b5f684d22/1ho4dllup';
+  s1.charset='UTF-8';
+  s1.setAttribute('crossorigin','*');
+  s0.parentNode.insertBefore(s1,s0);
+  })();
+  </script>
+  <!--End of Tawk.to Script-->
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+
 
     <title>KenaKata | {% block title %} {% endblock title %} </title>
 
@@ -65,19 +87,26 @@
          </ul>
 
          {% comment %} search function {% endcomment %}
-         <form action="{% url 'searchp' %}" method=="GET" class="d-flex">
+         {% comment %} <form action="{% url 'searchp' %}" method=="GET" class="d-flex">
           
            <input class="form-control me-2" 
            type="search" name="search" placeholder="Kenakata Search" 
            aria-label="Search">
            
-           <button class="btn btn-warning" type="submit">
+           <button class="btn btn-warning" type="submit"> {% endcomment %}
             {% comment %} <a id="GFG" href="{% url 'profile' %}">  {% endcomment %}
               {% comment %} {{request.user.username|make_list|first}} {% endcomment %}
-              search
+              {% comment %} search
              </a>
           </button>
-         </form>
+         </form> {% endcomment %}
+
+        <div class="search-bar">
+          <div class="input-group">
+            <input type="text" class="form-control" id="searchproducts" placeholder="search products">
+              <button class="input-group-text" id="basic-addon1"> <i class="fa fa-search"></i></button>
+          </div>
+        </div>
 
 
          <div>
@@ -112,12 +141,20 @@
     </nav>
     {% block banner_slider %} {% endblock banner_slider %}
     {% block livesale %} {% endblock livesale %}
-    {% block main-content %} {% endblock main-content %}
+    {% block main-content %} 
+    
+    
+    {% endblock main-content %}
 
+    {% block payment-gateway %}{% endblock payment-gateway %}
+
+    <a href="https://wa.me/+8801540051455?text=I'm%20interested%20in%20to%chat%" target="_blank">
+    <img src="{% static 'app/images/banner/whatsapp.PNG' %}" alt="whatsapp" width="60px"> 
+    </a>
     <!-- Start Footer -->
     <footer class="container-fluid bg-dark text-center p-2 mt-5">
         <small class="text-white">Copyright &copy; 2023 || Designed By Monzur Morshed Turzo || </small>
-        <img src="{% static 'app/images/payment.png' %}" alt="" srcset="" class="img-fluid" height="2px">
+        
     </footer> <!-- End Footer -->
 
     <!-- Jquery -->
@@ -128,5 +165,23 @@
     <script src="{% static 'app/js/owl.carousel.min.js' %}"></script>
     <script src="{% static 'app/js/all.min.js' %}"></script>
     <script src="{% static 'app/js/myscript.js' %}"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script>
+      var availableTags = [];
+
+      
+    $( "#searchproducts" ).autocomplete({
+      source: availableTags
+    });
+  </script>
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+  
+  <script>
+    alertify.set('notifier','position', 'bottom-right');
+    {% for msg in messages %}
+    alertify.success('{{msg}}');
+    {% endfor %}
+  </script>
+
   </body>
 </html>

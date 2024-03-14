@@ -78,6 +78,8 @@ class AddProduct(TemplateView):
                 if form.is_valid():
                     form.save()
                     return redirect('addnewprod')
+                else:
+                    return redirect('ecommerceprod') 
             else:
                 return redirect('ecommerceprod')       
         else:
@@ -98,6 +100,19 @@ class ProductEditView(TemplateView):
                 return redirect('index')
         else:
             return redirect('index')
+    def post(self,request,pk,*args,**kwargs):
+        if request.user.user_type=='developer':
+            if request.method=='post' or request.method=='POST':
+                edit=Product.objects.get(pk=pk)
+                form=Productform(request.POST,request.FILES,instance=edit)
+                if form.is_valid():
+                    form.save()
+                    return redirect('ecommerceprod')
+            else:
+                return redirect('ecommerceprod')       
+        else:
+            return redirect('ecommerceprod')
+
     
 class ecommerceorder(TemplateView):
     def get(self,request,*args,**kwargs):
@@ -208,12 +223,37 @@ class ProductDeleteView(DeleteView):
 #         return render(request, 'dashboard:ecommerceaddproduct.html',{'products':products})
 
 class dashboardindex(TemplateView):
+    
     def get(self,request,*args,**kwargs):
-        return render(request,'dashboard/index.html')
-
+        orders=Orderplaced.objects.all()
+        count= Customer.objects.count()
+        context= {
+            'orders':orders,
+            'count':count
+            
+        }
+        return render(request,'dashboard/index.html',context)
+    
     def post(self,request,*args,**kwargs):
         pass
     
+    
+# class ecommerceorder(TemplateView):
+#     def get(self,request,*args,**kwargs):
+#         if request.user.is_authenticated:
+#             if request.user.user_type=='developer':
+#                 orders=Orderplaced.objects.all()
+#                 count= Customer.objects.count()
+#                 context= {
+#                     'orders':orders,
+#                     'count':count
+                    
+#                 }
+#                 return render(request,'dashboard/ecommerceorders.html',context)
+#             else:
+#                 return redirect('index')
+#         else:
+#             return redirect('index')
 
 def pageseditprofile(request):
     return render(request,'dashboard/pages-edit-profile.html')

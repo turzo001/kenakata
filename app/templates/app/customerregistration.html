@@ -9,13 +9,13 @@
    <hr>
 
    <form action="" method="post" novalidate class="shadow p-5">
-   {% if messages %}
+   {% comment %} {% if messages %}
    {% for message in messages %}
    <p {% if messages.tags %}
     class="alert-danger alert-{{messages.tags}} mb-5" 
     {% endif %}>{{message}}</p>
    {% endfor %}
-   {% endif %}
+   {% endif %} {% endcomment %}
       {% csrf_token %}
       {% for fm in form %}
       <div class="form-group mb-3">

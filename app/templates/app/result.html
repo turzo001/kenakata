@@ -1,0 +1,23 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Prediction{% endblock title %}
+{% block main-content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Prediction Result</title>
+</head>
+<body>
+    <h1>Price Prediction Result</h1>
+
+    {% if predicted_price %}
+        <p>The predicted price is: {{ predicted_price }}</p>
+    {% else %}
+        <p>No prediction available.</p>
+    {% endif %}
+
+    <a href="{% url 'predict_price' %}">Back to Prediction</a>
+</body>
+</html>
+{% endblock main-content %}

@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxLengthValidator,MinValueValidator
+from sklearn.tree import DecisionTreeClassifier
+import joblib
+from joblib import load
 User=get_user_model()
 STATE_CHOICES=(
     ('Barisal Division','Barisal Division'),
@@ -39,13 +42,32 @@ class Product(models.Model):
     discounted_price=models.FloatField()
     description=models.TextField()
     brand=models.CharField(max_length=100)
+    quantity=models.IntegerField(null=True,blank=True,default=5)
     colour=models.CharField(max_length=20,null=True,blank=True)
     size=models.CharField(max_length=20,null=True,blank=True)
     catagory=models.CharField(choices=CATAGORY_CHOICES,max_length=2)
     product_image=models.ImageField(upload_to='productimg')
+    # predicted_price = models.FloatField(null=True, blank=True)
     
     def __str__(self):
         return str(self.id)
+
+# class PricePredictionInput(models.Model):
+#     ram = models.IntegerField()
+#     rom = models.IntegerField()
+
+
+# class data(models.Model):
+#     ram=models.FloatField()
+#     rom=models.FloatField()
+#     predictions=models.FloatField(blank=True)
+#     def save(self, *args, **kwargs):
+#         ml_model = joblib.load('predict.joblib')
+#         self.predictions = ml_model.predict(
+#             [[self.ram, self.rom, self.price]])
+#         return super().save(*args, *kwargs)   
+#     def __str__(self):
+#         return str(self.id)
     
 class Cart(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)

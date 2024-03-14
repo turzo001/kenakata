@@ -613,7 +613,7 @@
                     </li>
                   </ul> {% endcomment %}
                 {% comment %} </li> {% endcomment %}
-                <li class="menu-label">Pages</li>
+                {% comment %} <li class="menu-label">Pages</li> {% endcomment %}
                 {% comment %} <li>
                   <a class="has-arrow" href="javascript:;">
                     <div class="parent-icon"><span class="material-symbols-outlined">lock_open</span>
@@ -650,13 +650,13 @@
 
                   {% comment %} </ul> {% endcomment %}
                 </li>
-                <li>
+                {% comment %} <li>
                   <a href="{% url 'userprofile' %}">
                     <div class="parent-icon"><span class="material-symbols-outlined">account_circle</span>
                     </div>
                     <div class="menu-title">User Profile</div>
                   </a>
-                </li>
+                </li> {% endcomment %}
                 {% comment %} <li>
                   <a href="{% url 'timeline' %}">
                     <div class="parent-icon"><span class="material-symbols-outlined">hotel_class</span>
@@ -763,14 +763,14 @@
           </div>
           <div class="sidebar-bottom dropdown dropup-center dropup">
               <div class="dropdown-toggle d-flex align-items-center px-3 gap-3 w-100 h-100" data-bs-toggle="dropdown">
-                <div class="user-img">
+                {% comment %} <div class="user-img">
                    <img src="{% static 'dashboard/images/avatars/01.png' %}" alt="">
-                </div>
+                </div> {% endcomment %}
                 <div class="user-info">
-                  <h5 class="mb-0 user-name">Jhon Maxwell</h5>
-                  <p class="mb-0 user-designation">UI Engineer</p>
+                  <h5 class="mb-0 user-name">Loged in as {{request.user.username|capfirst}}</h5>
+                  {% comment %} <p class="mb-0 user-designation">UI Engineer</p> {% endcomment %}
                 </div>
-              </div>
+              {% comment %} </div>
               <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
                   account_circle
@@ -800,7 +800,7 @@
                   </span><span>Logout</span></a>
                 </li>
               </ul>
-          </div>
+          </div> {% endcomment %}
      </aside>
      <!--end sidebar-->
 
